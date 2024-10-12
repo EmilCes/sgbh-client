@@ -3,10 +3,10 @@ export interface Classroom {
     name: string;
     building: string;
     level: number;
-    width: string;
-    length: string;
+    width: number;
+    length: number;
     computerEquipment: number;
-    desk: number;
+    deskWithChair: number;
     currentChairs: number;
     currentTables: number;
     maxChairsCapacity: number;

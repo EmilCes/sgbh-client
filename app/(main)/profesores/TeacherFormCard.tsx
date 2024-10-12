@@ -6,17 +6,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { FormCardProps } from "@/types/components/FormCardProps";
 import { Teacher } from "@/types/teacher";
 
-
-interface ClassroomFormCardProps {
-  onClose: () => void;
-  onTeacherAdded: () => void;
-  teacher: Teacher | null;
-  isEditing: boolean;
-}
-
-export function TeacherFormCard({ onClose, onTeacherAdded, teacher, isEditing }: ClassroomFormCardProps) {
+export function TeacherFormCard({ onClose, onItemAdded: onTeacherAdded, item: teacher, isEditing }: FormCardProps<Teacher>) {
 
   return (
     <Card className="w-[600px]">

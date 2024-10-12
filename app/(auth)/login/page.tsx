@@ -1,6 +1,20 @@
+"use client"
+
 import LoginForm from "@/components/forms/LoginForm";
+import { useAuth } from "@/lib/utils/auth";
+import { redirect } from "next/navigation";
+import { useEffect } from "react";
 
 const Login = () => {
+
+  const { isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      return redirect("/aulas");
+    }
+  }, [isAuthenticated]);
+
   return (
     <>
 

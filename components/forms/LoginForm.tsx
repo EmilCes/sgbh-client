@@ -14,16 +14,32 @@ import {
     FormLabel,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useRouter } from "next/navigation";
+import { loginUser } from "@/lib/api/login";
+import { toast } from "@/hooks/use-toast";
+import { useAuth } from "@/lib/utils/auth";
 
 
 const LoginForm = () => {
+    const router = useRouter();
+    const { login } = useAuth();
 
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema)
     });
 
-    function onSubmit(values: z.infer<typeof loginSchema>) {
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof loginSchema>) {
+        try {
+            const { token } = await loginUser(values);
+            login(token);
+            router.push('/aulas');
+        } catch {
+            toast({
+                title: "Error",
+                description: "Hubo un error al iniciar sesión",
+                variant: "destructive"
+            })
+        }
     }
 
     return (
@@ -57,10 +73,10 @@ const LoginForm = () => {
 
                 <br></br>
 
-                <Button 
-                    type="submit" 
+                <Button
+                    type="submit"
                     className="w-full text-center flex justify-center mt-4 min-h-12 font-roboto">
-                        Iniciar Sesión
+                    Iniciar Sesión
                 </Button>
 
             </form>
@@ -69,3 +85,4 @@ const LoginForm = () => {
 }
 
 export default LoginForm;
+

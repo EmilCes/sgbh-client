@@ -1,15 +1,16 @@
-export const tableFields = [
-    "Nombre",
-    "Edificio",
-    "Nivel",
-    "Ancho (M)",
-    "Largo (M)",
-    "Equipos de Cómputo",
-    "Sillas Actuales",
-    "Mesas Actuales",
-    "Sillas Maximas",
-    "Mesas Maximas", 
-    "Lamparas",
-    "Nivel Termico",
-    "A/C"
-];
+export const classroomTableFields = {
+    'Nombre': 'name',
+    'Edificio': 'building',
+    'Nivel': 'level',
+    'Ancho (M)': 'width',
+    'Largo (M)': 'length',
+    'Equipos de Cómputo': 'computerEquipment',
+    'Escritorios con Silla': 'deskWithChair',
+    'Sillas Actuales': 'currentChairs',
+    'Mesas Actuales': 'currentTables',
+    'Sillas Maximas': 'maxChairsCapacity',
+    'Mesas Maximas': 'maxTablesCapacity', 
+    'Lamparas': 'lamps',
+    'Nivel Termico': 'thermalLevel',
+    'A/C': 'airConditioning'
+};

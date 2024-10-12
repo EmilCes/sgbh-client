@@ -1,9 +1,6 @@
 
 export const menuLinks = [
     {
-        name: "Inicio",
-        href: "/"    },
-    {
         name: "Aulas",
         href: "/aulas"    
     },

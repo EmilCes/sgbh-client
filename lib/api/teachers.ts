@@ -1,6 +1,5 @@
 import { Teacher } from '@/types/teacher';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002';
+import { fetchWithAuth } from '../utils/apiUtils';
 
 interface GetTeachersType {
     teachers: Teacher[];
@@ -8,8 +7,9 @@ interface GetTeachersType {
     lastPage: number;
 }
 
-export async function getTeachers(page = 1, limit = 10, searchTerm?: string) {
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+export async function getTeachers(page = 1, limit = 10, searchTerm?: string) {
     const url = new URL(`${API_URL}/teachers`);
     url.searchParams.append("page", page.toString());
     url.searchParams.append("limit", limit.toString());
@@ -18,69 +18,46 @@ export async function getTeachers(page = 1, limit = 10, searchTerm?: string) {
         url.searchParams.append("searchTerm", searchTerm);
     }
 
-    const response = await fetch(url.toString());
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch teachers');
-    }
-
-    const data: GetTeachersType = await response.json();
+    const data: GetTeachersType = await fetchWithAuth(url.toString(), {
+        method: 'GET',
+    });
 
     return {
-        teachers: data.teachers,
+        data: data.teachers,
         total: data.total,
         lastPage: data.lastPage
-    }
+    };
 }
 
 export async function createTeacher(teacher: Omit<Teacher, 'idTeacher'>): Promise<Teacher> {
-
-    const response = await fetch(`${API_URL}/teachers`, {
+    const data = await fetchWithAuth(`${API_URL}/teachers`, {
         method: 'POST',
+        body: JSON.stringify(teacher),
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(teacher),
     });
 
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to create teacher');
-    }
-
-    return response.json();
+    return data;
 }
 
 export async function updateTeacher(teacherId: string, teacher: Omit<Teacher, 'idTeacher'>): Promise<Teacher> {
-
-    const response = await fetch(`${API_URL}/teachers/${teacherId}`, {
+    const data = await fetchWithAuth(`${API_URL}/teachers/${teacherId}`, {
         method: 'PUT',
+        body: JSON.stringify(teacher),
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(teacher),
     });
 
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to create teacher');
-    }
-
-    return response.json();
+    return data;
 }
 
-export async function deleteTeacher(teacherId: string): Promise<Teacher> {
-
-    const response = await fetch(`${API_URL}/teachers/${teacherId}`, {
+export async function deleteTeacher(teacherId: string): Promise<void> {
+    await fetchWithAuth(`${API_URL}/teachers/${teacherId}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
-        }
+        },
     });
-
-    if (!response.ok) {
-        throw new Error('Failed to delete teacher');
-    }
-
-    return response.json();
 }

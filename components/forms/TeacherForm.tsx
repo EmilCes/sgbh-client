@@ -55,7 +55,6 @@ const TeacherForm = ({ onClose, onTeacherAdded, teacherData }: TeacherFormCardPr
                 await updateTeacher(teacherData.idTeacher, values);
             } else {
                 await createTeacher(values);
-
             }
 
             form.reset();

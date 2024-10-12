@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input"
 import {
     Form,
     FormControl,
+    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -11,45 +12,98 @@ import classroomSchema from "@/validations/classroomSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod"
+import { Classroom } from "@/types/classroom";
+import { useEffect, useState } from "react";
+import { createClassroom, updateClassroom } from "@/lib/api/classrooms";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { Checkbox } from "../ui/checkbox";
 
 
 interface ClassroomFormProps {
     onClose: () => void;
-  }
+    onClassroomAdded: () => void;
+    classroomData?: Classroom | null;
+}
 
-const ClassroomForm = ({ onClose }: ClassroomFormProps) => {
+const ClassroomForm = ({ onClose, onClassroomAdded, classroomData }: ClassroomFormProps) => {
+    console.log(classroomData);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const form = useForm<z.infer<typeof classroomSchema>>({
-        resolver: zodResolver(classroomSchema)
+        resolver: zodResolver(classroomSchema),
+        defaultValues: classroomData || {}
     });
 
-    function onSubmit(values: z.infer<typeof classroomSchema>) {
-        console.log(values)
+    useEffect(() => {
+        if (classroomData) {
+            form.reset({
+                ...classroomData,
+                level: classroomData.level ? Number(classroomData.level) : undefined,
+                computerEquipment: classroomData.computerEquipment ? Number(classroomData.computerEquipment) : undefined,
+                deskWithChair: classroomData.deskWithChair ? Number(classroomData.deskWithChair) : undefined,
+                currentChairs: classroomData.currentChairs ? Number(classroomData.currentChairs) : undefined,
+                currentTables: classroomData.currentTables ? Number(classroomData.currentTables) : undefined,
+                maxChairsCapacity: classroomData.maxChairsCapacity ? Number(classroomData.maxChairsCapacity) : undefined,
+                maxTablesCapacity: classroomData.maxTablesCapacity ? Number(classroomData.maxTablesCapacity) : undefined
+            });
+        };
+    }, [classroomData, form]);
+
+    async function onSubmit(values: z.infer<typeof classroomSchema>) {
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            if (classroomData) {
+                console.log('ClassroomId: ' + classroomData.idClassroom);
+                await updateClassroom(classroomData.idClassroom, values);
+            } else {
+                await createClassroom(values);
+            }
+
+            form.reset();
+            onClassroomAdded();
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Ocurrio un error al crear el aula");
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <div className="grid grid-cols-1 gap-4">
-                    <div className="col-span-1">
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Nombre del Aula</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Ingresa el nombre del aula" {...field} />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                    </div>
+
+                <div>
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Nombre del Aula</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Ingresa el nombre del aula" {...field} />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
                 </div>
 
                 <div className="grid grid-cols-3 gap-4">
 
-                    {/* AQUI FALTA UNO */}
+                    <FormField
+                        control={form.control}
+                        name="building"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Edificio</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Edificio" {...field} />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
 
                     <FormField
                         control={form.control}
@@ -76,9 +130,7 @@ const ClassroomForm = ({ onClose }: ClassroomFormProps) => {
                             </FormItem>
                         )}
                     />
-                </div>
 
-                <div className="grid grid-cols-3 gap-4">
                     <FormField
                         control={form.control}
                         name="length"
@@ -88,7 +140,7 @@ const ClassroomForm = ({ onClose }: ClassroomFormProps) => {
                                 <FormControl>
                                     <Input placeholder="Largo (M)" {...field} />
                                 </FormControl>
-                                
+
                             </FormItem>
                         )}
                     />
@@ -102,7 +154,20 @@ const ClassroomForm = ({ onClose }: ClassroomFormProps) => {
                                 <FormControl>
                                     <Input placeholder="Equipos de computo" {...field} />
                                 </FormControl>
-                                
+
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="deskWithChair"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Escritorios con Silla</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Escritorios con silla" {...field} />
+                                </FormControl>
                             </FormItem>
                         )}
                     />
@@ -116,13 +181,11 @@ const ClassroomForm = ({ onClose }: ClassroomFormProps) => {
                                 <FormControl>
                                     <Input placeholder="Sillas Actuales" {...field} />
                                 </FormControl>
-                                
+
                             </FormItem>
                         )}
                     />
-                </div>
 
-                <div className="grid grid-cols-3 gap-4">
                     <FormField
                         control={form.control}
                         name="currentTables"
@@ -132,7 +195,7 @@ const ClassroomForm = ({ onClose }: ClassroomFormProps) => {
                                 <FormControl>
                                     <Input placeholder="Mesas Actuales" {...field} />
                                 </FormControl>
-                                
+
                             </FormItem>
                         )}
                     />
@@ -146,7 +209,7 @@ const ClassroomForm = ({ onClose }: ClassroomFormProps) => {
                                 <FormControl>
                                     <Input placeholder="Sillas Máximas" {...field} />
                                 </FormControl>
-                                
+
                             </FormItem>
                         )}
                     />
@@ -160,14 +223,10 @@ const ClassroomForm = ({ onClose }: ClassroomFormProps) => {
                                 <FormControl>
                                     <Input placeholder="Mesas Máximas" {...field} />
                                 </FormControl>
-                                
+
                             </FormItem>
                         )}
                     />
-
-                </div>
-
-                <div className="grid grid-cols-3 gap-4">
 
                     <FormField
                         control={form.control}
@@ -178,7 +237,7 @@ const ClassroomForm = ({ onClose }: ClassroomFormProps) => {
                                 <FormControl>
                                     <Input placeholder="Lámparas" {...field} />
                                 </FormControl>
-                                
+
                             </FormItem>
                         )}
                     />
@@ -192,17 +251,53 @@ const ClassroomForm = ({ onClose }: ClassroomFormProps) => {
                                 <FormControl>
                                     <Input placeholder="Nivel Térmico" {...field} />
                                 </FormControl>
-                                
+
                             </FormItem>
                         )}
                     />
-
-                    {/* Chechkox para aire acondicionado */}
                 </div>
 
+                <div className="mt-4">
+                    <FormField
+                        control={form.control}
+                        name="airConditioning"
+                        render={({ field }) => (
+                            <FormItem
+                                className="flex flex-row items-start space-x-3 space-y-0"
+                            >
+                                <FormControl>
+                                    <Checkbox
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                    />
+                                </FormControl>
+                                <FormLabel className="font-normal">
+                                    ¿Cuenta con aire acondicionado?
+                                </FormLabel>
+                            </FormItem>
+                        )}
+                    />
+                </div>
+
+                {error && (
+                    <Alert variant="destructive">
+                        <AlertTitle>Error</AlertTitle>
+                        <AlertDescription>{error}</AlertDescription>
+                    </Alert>
+                )}
+
                 <div className="flex justify-between pt-4">
-                    <Button variant="destructive" onClick={onClose}>Cancelar</Button>
-                    <Button type="submit">Registrar</Button>
+                    <Button variant="destructive" onClick={onClose} disabled={isLoading}>Cancelar</Button>
+                    <Button type="submit" disabled={isLoading}>
+                        {
+                            isLoading
+                                ?
+                                (classroomData ?
+                                    'Actualizando...' : 'Registrando...')
+                                : (classroomData ?
+                                    'Actualizar' : 'Registrar')
+                        }
+                    </Button>
                 </div>
 
             </form>
