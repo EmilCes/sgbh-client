@@ -45,7 +45,14 @@ const CustomTable = <T extends { [key: string]: any }>({
                             {
                                 Object.values(columns).map((atribute, colIndex) => (
                                     <TableCell key={colIndex}>
-                                        {item[atribute as keyof T] !== undefined ? String(item[atribute as keyof T]) : 'N/A'}
+                                        {
+                                            item[atribute as keyof T] !== undefined ? (
+                                                typeof item[atribute as keyof T] === 'boolean'
+                                                    ? item[atribute as keyof T]
+                                                        ? 'Sí'
+                                                        : 'No'
+                                                    : String(item[atribute as keyof T])
+                                            ) : 'N/A'}
                                     </TableCell>
                                 ))
                             }
