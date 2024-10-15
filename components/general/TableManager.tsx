@@ -5,7 +5,6 @@ import { debounce } from 'lodash';
 import CustomTable from './CustomTable';
 import { toast } from '@/hooks/use-toast';
 import PaginationComponent from '@/components/general/Pagination';
-import { redirect } from 'next/navigation';
 
 interface TableManagerProps<T extends { [key: string]: any }> {
     title: string;

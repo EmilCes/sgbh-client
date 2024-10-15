@@ -7,7 +7,7 @@ import { deleteClassroom, getClassrooms } from "@/lib/api/classrooms"
 import { ClassroomFormCard } from "./ClassroomFormCard"
 import isAuth from "@/components/auth/isAuth"
 
-export const ClassroomPage = () => {
+function ClassroomPage() {
   return (
     <TableManager<Classroom>
         title="Gestión de Aulas"
