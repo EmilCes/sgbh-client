@@ -26,7 +26,7 @@ const Login = () => {
       <div className="w-1/2 h-screen relative">
         <Image 
           className="object-cover"
-          src="/images/login-cover.jpg"
+          src="/dashboardfei4/images/login-cover.jpg"
           alt="Login Cover"
           fill
           priority
