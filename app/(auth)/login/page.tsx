@@ -2,6 +2,7 @@
 
 import LoginForm from "@/components/forms/LoginForm";
 import { useAuth } from "@/lib/utils/auth";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
 
@@ -22,11 +23,14 @@ const Login = () => {
         <a href="https://www.uv.mx" target="_blank">Universidad Veracruzana</a>
       </div>
 
-      <div
-        className="w-1/2 bg-cover bg-center"
-        style={{
-          backgroundImage: `url('/images/login-cover.jpg')`,
-        }}>
+      <div className="w-1/2 h-screen relative">
+        <Image 
+          className="object-cover"
+          src="/images/login-cover.jpg"
+          alt="Login Cover"
+          fill
+          priority
+        />
       </div>
 
       <div className="w-1/2 flex flex-col justify-center items-center">
