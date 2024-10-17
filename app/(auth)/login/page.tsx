@@ -25,7 +25,7 @@ const Login = () => {
       <div
         className="w-1/2 bg-cover bg-center"
         style={{
-          backgroundImage: `url('public/images/login-cover.jpg')`,
+          backgroundImage: `url('/images/login-cover.jpg')`,
         }}>
       </div>
 

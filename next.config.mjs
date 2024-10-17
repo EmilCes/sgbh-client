@@ -4,6 +4,7 @@ const nextConfig = {
     trailingSlash: true,
     output: 'export',
     basePath: '/dashboardfei4',
+    assetPrefix: '/dashboardfei4',
     eslint: {
         ignoreDuringBuilds: true
     }
