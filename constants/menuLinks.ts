@@ -6,21 +6,22 @@ export const menuLinks = [
     },
     {
         name: "Experiencias Educativas",
-        href: "/experiencias-educativas"    
+        href: ""    
     },
     {
         name: "Profesores",
-        href: "/profesores"    },
+        href: "/profesores"    
+    },
     {
         name: "Programas Educativos",
-        href: "/programas-educativos"
+        href: ""
     },
     {
         name: "Banco de Horas",
-        href: "/banco-horas"
+        href: ""
     },
     {
         name: "Oferta Educativa",
-        href: "/oferta-educativa"
+        href: ""
     }
 ]

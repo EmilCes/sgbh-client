@@ -18,14 +18,23 @@ const Navbar = () => {
             <div className="flex items-center space-x-12">
                 {
                     menuLinks.map((link, index) => (
-                        <Link
-                            key={index}
-                            href={link.href}
-                            className={`hover:text-blue-600 hover:underline-offset-4 ${pathName === link.href ? "text-blue-600" : ""
-                                }`}
-                        >
-                            {link.name}
-                        </Link>
+                        link.href ? (
+                            <Link
+                                key={index}
+                                href={link.href}
+                                className={`hover:text-blue-600 hover:underline-offset-4 ${pathName === link.href ? "text-blue-600" : ""
+                                    }`}
+                            >
+                                {link.name}
+                            </Link>
+                        ) : (
+                            <span
+                                key={index}
+                                className="text-gray-400 cursor-not-allowed"
+                            >
+                                {link.name}
+                            </span>
+                        )
                     ))
                 }
             </div>
