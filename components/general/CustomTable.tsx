@@ -1,4 +1,3 @@
-import React from "react";
 import {
     Table,
     TableBody,
@@ -28,7 +27,7 @@ const CustomTable = <T extends { [key: string]: any }>({
 }: CustomTableProps<T>) => {
     return (
         <div className="overflow-y-auto max-h-[95%]">
-            <Table>
+            <Table className="w-full">
                 <TableHeader>
                     <TableRow className="text-center">
                         {
@@ -43,18 +42,26 @@ const CustomTable = <T extends { [key: string]: any }>({
                     {data.map((item, index) => (
                         <TableRow key={index} className="text-center">
                             {
-                                Object.values(columns).map((atribute, colIndex) => (
-                                    <TableCell key={colIndex}>
-                                        {
-                                            item[atribute as keyof T] !== undefined ? (
-                                                typeof item[atribute as keyof T] === 'boolean'
-                                                    ? item[atribute as keyof T]
-                                                        ? 'Sí'
-                                                        : 'No'
-                                                    : String(item[atribute as keyof T])
-                                            ) : 'N/A'}
-                                    </TableCell>
-                                ))
+                                Object.values(columns).map((attribute, colIndex) => {
+
+                                    const value = item[attribute as keyof T];
+                                    const displayValue =
+                                        value === null || value === undefined
+                                            ? "N/A"
+                                            : typeof value === "boolean"
+                                                ? value
+                                                    ? "Sí"
+                                                    : "No"
+                                                : String(value);
+
+                                    return (
+                                        <TableCell 
+                                            key={colIndex} 
+                                            className="whitespace-nowrap overflow-hidden text-ellipsis min-w-[15px] max-[20px] text-sm">
+                                            {displayValue}
+                                        </TableCell>
+                                    );
+                                })
                             }
                             <CustomActionsTableRow
                                 entityId={item[idField]}
