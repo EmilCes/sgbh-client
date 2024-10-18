@@ -2,19 +2,20 @@
 
 import LoginForm from "@/components/forms/LoginForm";
 import { useAuth } from "@/lib/utils/auth";
-import Image from "next/image";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
 
 const Login = () => {
 
   const { isAuthenticated } = useAuth();
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
   useEffect(() => {
     if (isAuthenticated) {
-      return redirect("/aulas");
+      return redirect(`${basePath}/aulas`);
     }
   }, [isAuthenticated]);
+
 
   return (
     <>
@@ -23,14 +24,11 @@ const Login = () => {
         <a href="https://www.uv.mx" target="_blank">Universidad Veracruzana</a>
       </div>
 
-      <div className="w-1/2 h-screen relative">
-        <Image 
-          className="object-cover"
-          src="/dashboardfei4/images/login-cover.jpg"
-          alt="Login Cover"
-          fill
-          priority
-        />
+      <div
+        className="w-1/2 bg-cover bg-center"
+        style={{
+          backgroundImage: `url('${basePath}/images/login-cover.jpg')`,
+        }}>
       </div>
 
       <div className="w-1/2 flex flex-col justify-center items-center">

@@ -8,10 +8,12 @@ import { useAuth } from "@/lib/utils/auth";
 export default function isAuth(Component: any) {
   return function IsAuth(props: any) {
     const { isAuthenticated, isLoading } = useAuth();
+    const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
 
     useEffect(() => {
       if (!isAuthenticated && !isLoading) {
-        return redirect("/login");
+        return redirect(`${basePath}/login`);
       }
     }, [isAuthenticated, isLoading]);
 

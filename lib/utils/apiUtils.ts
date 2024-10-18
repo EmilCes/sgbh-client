@@ -1,6 +1,9 @@
 import { redirect } from "next/navigation";
 
 export const fetchWithAuth = async (url: string, options: RequestInit) => {
+    
+    const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
     try {
         const token = localStorage.getItem("token");
 
@@ -21,7 +24,7 @@ export const fetchWithAuth = async (url: string, options: RequestInit) => {
 
             if (response.status === 401) {
                 localStorage.removeItem("token");
-                return redirect("/login");
+                return redirect(`${basePath}/login`);
             }
 
             const errorData = await response.json();
@@ -32,6 +35,6 @@ export const fetchWithAuth = async (url: string, options: RequestInit) => {
 
     } catch (error: any) {
         localStorage.removeItem("token");
-        window.location.href = "/login";
+        window.location.href = `${basePath}/login`;
     }
 };

@@ -3,11 +3,13 @@ const nextConfig = {
     skipTrailingSlashRedirect: true,
     trailingSlash: true,
     output: 'export',
-    basePath: '/dashboardfei4',
-    assetPrefix: '/dashboardfei4',
     eslint: {
         ignoreDuringBuilds: true
-    }
+    },
+    ...(process.env.NODE_ENV === 'production' ? {
+        basePath: process.env.NEXT_BASE_PATH,
+        assetPrefix: process.env.NEXT_BASE_PATH
+    } : {})
 };
 
 export default nextConfig;
