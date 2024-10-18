@@ -1,8 +1,10 @@
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
 export const menuLinks = [
     {
         name: "Aulas",
-        href: "/aulas"    
+        href: `${basePath}/aulas`   
     },
     {
         name: "Experiencias Educativas",
@@ -10,7 +12,7 @@ export const menuLinks = [
     },
     {
         name: "Profesores",
-        href: "/profesores"    
+        href: `${basePath}/profesores` 
     },
     {
         name: "Programas Educativos",
