@@ -43,7 +43,7 @@ const TableManager = <T extends { [key: string]: any }>({
 
     const calculateRowsPerPage = () => {
         const width = window.innerWidth;
-        return width > 1900 ? 10 : 8;
+        return width > 1900 ? 10 : 7;
     };
 
     const handleClose = () => {
