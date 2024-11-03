@@ -8,7 +8,7 @@ interface LoginError {
     message: string;
 }
 
-export async function loginUser(values: { email: string; password: string }): Promise<LoginResponse> {
+export async function loginUser(values: { email: string; password: string }): Promise<LoginResponse | null> {
     try {
         const response = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
@@ -20,6 +20,11 @@ export async function loginUser(values: { email: string; password: string }): Pr
 
         if (!response.ok) {
             const errorData: LoginError = await response.json();
+            
+            if(response.status === 401) {
+                return null;
+            }
+
             throw new Error(errorData.message || 'Failed to login');
         }
 

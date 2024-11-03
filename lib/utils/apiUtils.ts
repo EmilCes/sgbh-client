@@ -24,7 +24,8 @@ export const fetchWithAuth = async (url: string, options: RequestInit) => {
 
             if (response.status === 401) {
                 localStorage.removeItem("token");
-                return redirect(`${basePath}/login`);
+                window.location.href = `${basePath}/login`;
+                throw new Error("Unauthorized");
             }
 
             const errorData = await response.json();
@@ -34,7 +35,6 @@ export const fetchWithAuth = async (url: string, options: RequestInit) => {
         return response.json();
 
     } catch (error: any) {
-        localStorage.removeItem("token");
-        window.location.href = `${basePath}/login`;
+        throw error;
     }
 };

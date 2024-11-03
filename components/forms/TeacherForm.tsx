@@ -59,8 +59,12 @@ const TeacherForm = ({ onClose, onTeacherAdded, teacherData }: TeacherFormCardPr
 
             form.reset();
             onTeacherAdded();
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Ocurrio un error al crear el profesor');
+        } catch (err: any) {
+            if (err.message === "Unauthorized") {
+                setError("Sesión expirada. Por favor, inicia sesión nuevamente.");
+            } else {
+                setError(err instanceof Error ? err.message : 'Ocurrió un error al crear el profesor');
+            }
         } finally {
             setIsLoading(false);
         }
@@ -75,7 +79,7 @@ const TeacherForm = ({ onClose, onTeacherAdded, teacherData }: TeacherFormCardPr
                         name="name"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Nombre (s)</FormLabel>
+                                <FormLabel>Nombre (s) *</FormLabel>
                                 <FormControl>
                                     <Input placeholder="Nombre" {...field} />
                                 </FormControl>
@@ -88,7 +92,7 @@ const TeacherForm = ({ onClose, onTeacherAdded, teacherData }: TeacherFormCardPr
                         name="lastName"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Apellidos</FormLabel>
+                                <FormLabel>Apellidos *</FormLabel>
                                 <FormControl>
                                     <Input placeholder="Apellidos" {...field} />
                                 </FormControl>
@@ -103,7 +107,7 @@ const TeacherForm = ({ onClose, onTeacherAdded, teacherData }: TeacherFormCardPr
                         name="personalNumber"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Numero de Personal</FormLabel>
+                                <FormLabel>Numero de Personal *</FormLabel>
                                 <FormControl>
                                     <Input type="number" placeholder="Numero de personal" {...field} />
                                 </FormControl>
@@ -156,6 +160,34 @@ const TeacherForm = ({ onClose, onTeacherAdded, teacherData }: TeacherFormCardPr
                 <div className="grid grid-cols-2 gap-4">
                     <FormField
                         control={form.control}
+                        name="phoneNumber"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Numero Telefónico</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Numero telefónico" {...field} />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="extension"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Extensión</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Extensión" {...field} />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                        control={form.control}
                         name="uvAdmissionDate"
                         render={({ field }) => (
                             <FormItem>
@@ -194,12 +226,12 @@ const TeacherForm = ({ onClose, onTeacherAdded, teacherData }: TeacherFormCardPr
                     <Button variant="destructive" onClick={onClose} disabled={isLoading}>Cancelar</Button>
                     <Button type="submit" disabled={isLoading}>
                         {
-                            isLoading 
-                            ? 
-                                (teacherData ? 
-                                    'Actualizando...' : 'Registrando...') 
-                            : (teacherData ? 
-                                    'Actualizar' : 'Registrar') 
+                            isLoading
+                                ?
+                                (teacherData ?
+                                    'Actualizando...' : 'Registrando...')
+                                : (teacherData ?
+                                    'Actualizar' : 'Registrar')
                         }
                     </Button>
                 </div>

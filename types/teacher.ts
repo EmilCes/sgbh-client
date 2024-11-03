@@ -3,9 +3,11 @@ export interface Teacher {
     name: string;
     lastName: string;
     personalNumber: number;
-    antiquity: number;
-    personalAccount: string;
-    institutionalAccount: string;
-    uvAdmissionDate: string;
-    birthdate: string;
+    antiquity?: number;
+    personalAccount?: string;
+    institutionalAccount?: string;
+    phoneNumber?: string;
+    extension?: string;
+    uvAdmissionDate?: string;
+    birthdate?: string;
 }

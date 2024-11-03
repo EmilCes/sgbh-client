@@ -19,17 +19,26 @@ const teacherSchema = z.object({
   antiquity: z
     .union([z.string(), z.number()])
     .refine((value) => !isNaN(Number(value)), { message: "La antigüedad debe ser un número" })
-    .transform((value) => Number(value)),
+    .transform((value) => Number(value))
+    .optional(),
 
   personalAccount: z
     .string()
-    .min(1, { message: "La cuenta personal es obligatoria" })
+    .min(1, { message: "La cuenta institucional es obligatoria."})
     .max(50, { message: "La cuenta personal debe tener un máximo de 50 caracteres" }),
 
   institutionalAccount: z
     .string()
-    .min(1, { message: "La cuenta institucional es obligatoria" })
+    .min(1, { message: "La cuenta institucional es obligatoria."})
     .max(52, { message: "La cuenta institucional debe tener un máximo de 52 caracteres" }),
+  
+  phoneNumber: z
+    .string()
+    .max(10, { message: "El numero telefónico debe tener un máximo de 10 digitos" }),
+
+  extension: z
+    .string()
+    .max(10, { message: "La extensión debe tener un máximo de 10 digitos" }),
 
   uvAdmissionDate: z
     .string()

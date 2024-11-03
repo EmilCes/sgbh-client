@@ -12,8 +12,8 @@ interface CustomActionsTableRowProps<T> {
 
 const CustomActionsTableRow = <T,>({ entityId, entityData, onEntityDeleted, onEdit, deleteFunction }: CustomActionsTableRowProps<T>) => {
     return (
-        <TableCell>
-            <div className="flex justify-center text-center space-x-8">
+        <TableCell className="max-w-2">
+            <div className="flex justify-center text-center space-x-4">
                 <button className="text-blue-500 hover:text-blue-700" onClick={() => onEdit(entityData)}>
                     <Pencil size={20} />
                 </button>

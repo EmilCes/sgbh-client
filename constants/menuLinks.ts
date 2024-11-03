@@ -7,12 +7,12 @@ export const menuLinks = [
         href: `${basePath}/aulas`   
     },
     {
-        name: "Experiencias Educativas",
-        href: ""    
-    },
-    {
         name: "Profesores",
         href: `${basePath}/profesores` 
+    },
+    {
+        name: "Experiencias Educativas",
+        href: ""    
     },
     {
         name: "Programas Educativos",

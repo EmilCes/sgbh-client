@@ -26,8 +26,8 @@ const CustomTable = <T extends { [key: string]: any }>({
     deleteFunction
 }: CustomTableProps<T>) => {
     return (
-        <div className="overflow-y-auto max-h-[95%]">
-            <Table className="w-full">
+        <div className="w-full overflow-hidden">
+            <Table className="w-full table-fixed">
                 <TableHeader>
                     <TableRow className="text-center">
                         {
@@ -57,7 +57,7 @@ const CustomTable = <T extends { [key: string]: any }>({
                                     return (
                                         <TableCell 
                                             key={colIndex} 
-                                            className="whitespace-nowrap overflow-hidden text-ellipsis min-w-[15px] max-[20px] text-sm">
+                                            className=" overflow-hidden text-ellipsis px-2 py-2 text-sm">
                                             {displayValue}
                                         </TableCell>
                                     );

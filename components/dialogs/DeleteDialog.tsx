@@ -1,7 +1,6 @@
 import {
     AlertDialog,
     AlertDialogAction,
-    AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
     AlertDialogFooter,
@@ -50,8 +49,9 @@ export default function DeleteDialog({ entityId, onDelete, deleteFunction }: Del
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel className="bg-destructive text-white">Cancelar</AlertDialogCancel>
+                    <AlertDialogAction >Cancelar</AlertDialogAction>
                     <AlertDialogAction
+                        className="bg-destructive text-white"
                         onClick={handleDelete}
                         disabled={isLoading}
                     >

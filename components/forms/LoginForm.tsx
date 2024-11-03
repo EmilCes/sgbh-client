@@ -30,9 +30,21 @@ const LoginForm = () => {
 
     async function onSubmit(values: z.infer<typeof loginSchema>) {
         try {
-            const { token } = await loginUser(values);
-            login(token);
+            const response = await loginUser(values);
+
+            if (response === null) {
+                toast({
+                    title: "Credenciales Inválidas",
+                    description: "Por favor, verifica tus credenciales.",
+                    variant: "destructive"
+                });
+
+                return;
+            }
+
+            login(response.token);
             router.push('/aulas');
+
         } catch {
             toast({
                 title: "Error",
